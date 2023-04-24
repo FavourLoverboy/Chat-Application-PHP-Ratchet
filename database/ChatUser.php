@@ -185,6 +185,22 @@
                 return false;
             }
         }
+
+        function update_user_login_data(){
+            $query = "UPDATE chat_users SET login_status = :login_status WHERE id = :id";
+
+            $statement = $this->connect->prepare($query);
+
+            $statement->bindParam(':login_status', $this->user_login_status);
+
+            $statement->bindParam(':id', $this->user_id);
+
+            if($statement->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
 ?>

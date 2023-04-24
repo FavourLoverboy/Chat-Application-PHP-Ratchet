@@ -2,6 +2,50 @@
 
     session_start();
 
+    $error = '';
+
+    if(isset($_SESSION['user_data'])){
+        header('location:chatroom.php');
+    }
+
+    if(isset($_POST['login'])){
+        require_once('database/ChatUser.php');
+
+        $user_object = new ChatUser;
+
+        $user_object->setUserEmail($_POST['user_email']);
+
+        $user_data = $user_object->get_user_data_by_email();
+
+        if(is_array($user_data) && count($user_data) > 0){
+            if($user_data['user_status'] == 'Enable'){
+                if($user_data['password'] == $_POST['user_password']){
+                    $user_object->setUserId($user_data['id']);
+
+                    $user_object->setUserLoginStatus('Login');
+
+                    $user_token = md5(uniqid());
+
+                    if($user_object->update_user_login_data()){
+                        $_SESSION['user_data'][$user_data['id']] = [
+                            'id'    =>  $user_data['id'],
+                            'name'  =>  $user_data['name'],
+                            'profile'   =>  $user_data['profile'],
+                            'token' =>  $user_token
+                        ];
+                        header('location:chatroom.php');
+                    }
+                }else{
+                    $error = 'Wrong Password';
+                }
+            }else{
+                $error = 'Please Verify Your Email Address';
+            }
+        }else{
+            $error = 'Wrong Email Address';
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -44,14 +88,40 @@
             <div class="col-md-4">
                <?php
                     if(isset($_SESSION['success_message'])){
-                        echo '
+                            echo '
                             <div class="alert alert-success">
-                                '.$_SESSION["success_message"] .'
+                            '.$_SESSION["success_message"] .'
+                            </div>
+                            ';
+                            unset($_SESSION['success_message']);
+                    }
+
+                    if($error != ''){
+                        echo '
+                            <div class="alert alert-danger">
+                                '.$error.'
                             </div>
                         ';
-                        unset($_SESSION['success_message']);
                     }
                ?>
+                <div class="card">
+                    <div class="card-header">Login</div>
+                    <div class="card-body">
+                        <form method="post" id="login_form">
+                            <div class="form-group">
+                                <label>Enter Your Email Address</label>
+                                <input type="text" name="user_email" id="user_email"  class="form-control" data-parsley-type="email" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Enter Your Password</label>
+                                <input type="password" name="user_password" id="user_password" class="form-control" required />
+                            </div>
+                            <div class="form-group text-center">
+                                <input type="submit" name="login" id="login" class="btn btn-primary" value="Login" />
+                            </div>
+                        </form>
+                    </div>  
+                </div>
             </div>
         </div>
     </div>
