@@ -201,6 +201,55 @@
                 return false;
             }
         }
+
+        function get_user_data_by_id(){
+            $query = "SELECT * FROM chat_users WHERE id = :id";
+
+            $statement = $this->connect->prepare($query);
+
+            $statement->bindParam(':id', $this->user_id);
+
+            try{
+                if($statement->execute()){
+                    $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+                }else{
+                    $user_data = array();
+                }
+            }catch (Exception $error){
+                echo $error->getMessage();
+            }
+            return $user_data;
+        }
+
+        function upload_image($user_profile){
+            $extension = explode('.', $user_profile['name']);
+            $new_name = rand() . '.' . $extension[1];
+            $destination = 'images/' . $new_name;
+            move_uploaded_file($user_profile['tmp_name'], $destination);
+            return $destination;
+        }
+
+        function update_data(){
+            $query = "UPDATE chat_users SET name = :name, email = :email, password = :password, profile = :profile WHERE id = :id";
+
+            $statement = $this->connect->prepare($query);
+
+            $statement->bindParam(':name', $this->user_name);
+
+            $statement->bindParam(':email', $this->user_email);
+
+            $statement->bindParam(':password', $this->user_password);
+
+            $statement->bindParam(':profile', $this->user_profile);
+
+            $statement->bindParam(':id', $this->user_id);
+
+            if($statement->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
 ?>
