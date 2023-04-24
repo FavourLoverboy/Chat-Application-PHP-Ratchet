@@ -271,13 +271,13 @@
 			$.ajax({
 				url:"action.php",
 				method:"POST",
-				data:{user_id:user_id, action:'leave'},
-				success:function(data)
-				{
+				data:{
+                    user_id:user_id,
+                    action:'leave'
+                },
+				success:function(data){
 					var response = JSON.parse(data);
-
-					if(response.status == 1)
-					{
+					if(response.status == 1){
 						conn.close();
 						location = 'index.php';
 					}
