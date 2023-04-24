@@ -152,6 +152,39 @@
                 return false;
             }
         }
+
+        function is_valid_email_verification_code(){
+            $query = "
+            SELECT * FROM chat_users WHERE verification = :verification";
+
+            $statement = $this->connect->prepare($query);
+
+            $statement->bindParam(':verification', $this->user_verification_code);
+
+            $statement->execute();
+
+            if($statement->rowCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function enable_user_account(){
+            $query = "UPDATE chat_users SET user_status = :user_status WHERE verification = :verification";
+
+            $statement = $this->connect->prepare($query);
+
+            $statement->bindParam(':user_status', $this->user_status);
+
+            $statement->bindParam(':verification', $this->user_verification_code);
+
+            if($statement->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
 ?>
