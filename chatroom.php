@@ -205,36 +205,13 @@
 	$(document).ready(function(){
 
 		var conn = new WebSocket('ws://localhost:8080');
-		conn.onopen = function(e) {
-		    console.log("Connection established!");
-		};
+        conn.onopen = function(e) {
+            console.log("Connection established!");
+        };
 
-		conn.onmessage = function(e) {
-		    console.log(e.data);
-
-		    var data = JSON.parse(e.data);
-
-		    var row_class = '';
-
-		    var background_class = '';
-
-		    if(data.from == 'Me')
-		    {
-		    	row_class = 'row justify-content-start';
-		    	background_class = 'text-dark alert-light';
-		    }
-		    else
-		    {
-		    	row_class = 'row justify-content-end';
-		    	background_class = 'alert-success';
-		    }
-
-		    var html_data = "<div class='"+row_class+"'><div class='col-sm-10'><div class='shadow-sm alert "+background_class+"'><b>"+data.from+" - </b>"+data.msg+"<br /><div class='text-right'><small><i>"+data.dt+"</i></small></div></div></div></div>";
-
-		    $('#messages_area').append(html_data);
-
-		    $("#chat_message").val("");
-		};
+        conn.onmessage = function(e) {
+            console.log(e.data);
+        };
 
 		$('#chat_form').parsley();
 
