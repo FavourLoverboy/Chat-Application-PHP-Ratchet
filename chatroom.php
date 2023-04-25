@@ -215,10 +215,10 @@
 		    var background_class = '';
 
 		    if(data.from == 'Me'){
-		    	row_class = 'row justify-content-start';
+		    	row_class = 'row justify-content-end';
 		    	background_class = 'text-dark alert-light';
 		    }else{
-		    	row_class = 'row justify-content-end';
+		    	row_class = 'row justify-content-start';
 		    	background_class = 'alert-success';
 		    }
 
