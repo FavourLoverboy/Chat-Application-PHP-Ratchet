@@ -250,6 +250,14 @@
                 return false;
             }
         }
+
+        function get_user_all_data(){
+            $query = "SELECT * FROM chat_users";
+            $statement = $this->connect->prepare($query);
+            $statement->execute();
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }
     }
 
 ?>

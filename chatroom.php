@@ -1,22 +1,19 @@
 <?php 
     session_start();
 
-    if(!isset($_SESSION['user_data']))
-    {
+    if(!isset($_SESSION['user_data'])){
         header('location:index.php');
     }
 
-    // require('database/ChatUser.php');
+    require('database/ChatUser.php');
 
-    // require('database/ChatRooms.php');
+    require('database/ChatRooms.php');
+    $chat_object = new ChatRooms;
+    $chat_data = $chat_object->get_all_chat_data();
 
-    // $chat_object = new ChatRooms;
+    $user_object = new ChatUser;
 
-    // $chat_data = $chat_object->get_all_chat_data();
-
-    // $user_object = new ChatUser;
-
-    // $user_data = $user_object->get_user_all_data();
+    $user_data = $user_object->get_user_all_data();
 
 ?>
 
@@ -100,31 +97,31 @@
 					</div>
 					<div class="card-body" id="messages_area">
 					<?php
-                        // foreach($chat_data as $chat){
-                        //     if(isset($_SESSION['user_data'][$chat['userid']])){
-                        //         $from = 'Me';
-                        //         $row_class = 'row justify-content-start';
-                        //         $background_class = 'text-dark alert-light';
-                        //     }else{
-                        //         $from = $chat['user_name'];
-                        //         $row_class = 'row justify-content-end';
-                        //         $background_class = 'alert-success';
-                        //     }
+                        foreach($chat_data as $chat){
+                            if(isset($_SESSION['user_data'][$chat['userid']])){
+                                $from = 'Me';
+                                $row_class = 'row justify-content-end';
+                                $background_class = 'text-dark alert-light';
+                            }else{
+                                $from = $chat['name'];
+                                $row_class = 'row justify-content-start';
+                                $background_class = 'alert-success';
+                            }
 
-                        //     echo '
-                        //     <div class="'.$row_class.'">
-                        //         <div class="col-sm-10">
-                        //             <div class="shadow-sm alert '.$background_class.'">
-                        //                 <b>'.$from.' - </b>'.$chat["msg"].'
-                        //                 <br />
-                        //                 <div class="text-right">
-                        //                     <small><i>'.$chat["created_on"].'</i></small>
-                        //                 </div>
-                        //             </div>
-                        //         </div>
-                        //     </div>
-                        //     ';
-                        // }
+                            echo '
+                            <div class="'.$row_class.'">
+                                <div class="col-sm-10">
+                                    <div class="shadow-sm alert '.$background_class.'">
+                                        <b>'.$from.' - </b>'.$chat["msg"].'
+                                        <br />
+                                        <div class="text-right">
+                                            <small><i>'.$chat["created_on"].'</i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            ';
+                        }
 					?>
 					</div>
 				</div>
@@ -163,30 +160,26 @@
 					<div class="card-body" id="user_list">
 						<div class="list-group list-group-flush">
 						<?php
-						if(count($user_data) > 0)
-						{
-							foreach($user_data as $key => $user)
-							{
-								$icon = '<i class="fa fa-circle text-danger"></i>';
+							if(count($user_data) > 0){
+								foreach($user_data as $key => $user){
+									$icon = '<i class="fa fa-circle text-danger"></i>';
 
-								if($user['user_login_status'] == 'Login')
-								{
-									$icon = '<i class="fa fa-circle text-success"></i>';
+									if($user['login_status'] == 'Login'){
+										$icon = '<i class="fa fa-circle text-success"></i>';
+									}
+
+									if($user['id'] != $login_user_id){
+										echo '
+											<a class="list-group-item list-group-item-action">
+												<img src="'.$user["profile"].'" class="img-fluid rounded-circle img-thumbnail" width="50" />
+												<span class="ml-1"><strong>'.$user["name"].'</strong></span>
+												<span class="mt-2 float-right">'.$icon.'</span>
+											</a>
+										';
+									}
+
 								}
-
-								if($user['user_id'] != $login_user_id)
-								{
-									echo '
-									<a class="list-group-item list-group-item-action">
-										<img src="'.$user["user_profile"].'" class="img-fluid rounded-circle img-thumbnail" width="50" />
-										<span class="ml-1"><strong>'.$user["user_name"].'</strong></span>
-										<span class="mt-2 float-right">'.$icon.'</span>
-									</a>
-									';
-								}
-
 							}
-						}
 						?>
 						</div>
 					</div>

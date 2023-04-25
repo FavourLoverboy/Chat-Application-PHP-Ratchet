@@ -60,7 +60,7 @@
         }
 
         function get_all_chat_data(){
-            $query = "SELECT * FROM chatroom INNER JOIN chat_user_table ON chat_user_table.user_id = chatroom.userid ORDER BY chatroom.id ASC";
+            $query = "SELECT * FROM chatroom INNER JOIN chat_users ON chat_users.id = chatroom.userid ORDER BY chatroom.id ASC";
 
             $statement = $this->connect->prepare($query);
 
