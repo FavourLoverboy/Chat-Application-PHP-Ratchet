@@ -258,6 +258,16 @@
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $data;
         }
+
+        function get_user_all_data_with_status_count(){
+            $query = "SELECT id, name, profile, login_status, (SELECT COUNT(*) FROM chat_message WHERE to_user_id = :id AND from_user_id = chat_users.id AND status = 'No') AS count_status FROM chat_users";
+
+            $statement = $this->connect->prepare($query);
+            $statement->bindParam(':id', $this->user_id);
+            $statement->execute();
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }
     }
 
 ?>
