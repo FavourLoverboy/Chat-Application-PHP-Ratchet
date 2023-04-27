@@ -14,9 +14,40 @@
         }
 
         public function onOpen(ConnectionInterface $conn) {
-            // Store the new connection to send messages to later
-            $this->clients->attach($conn);
 
+            // Store the new connection to send messages to later
+            echo 'Server Started';
+    
+            $this->clients->attach($conn);
+    
+            $querystring = $conn->httpRequest->getUri()->getQuery();
+    
+            parse_str($querystring, $queryarray);
+    
+            if(isset($queryarray['token'])){
+    
+                $user_object = new \ChatUser;
+    
+                $user_object->setUserToken($queryarray['token']);
+    
+                $user_object->setUserConnectionId($conn->resourceId);
+    
+                $user_object->update_user_connection_id();
+    
+                $user_data = $user_object->get_user_id_from_token();
+                
+                $user_id = $user_data['user_id'];
+    
+                $data['status_type'] = 'Online';
+    
+                $data['user_id_status'] = $user_id;
+    
+                // first, you are sending to all existing users message of 'new'
+                foreach ($this->clients as $client){
+                    $client->send(json_encode($data)); //here we are sending a status-message
+                }
+            }
+    
             echo "New connection! ({$conn->resourceId})\n";
         }
 

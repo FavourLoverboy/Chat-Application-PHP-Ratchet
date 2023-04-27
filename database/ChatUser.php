@@ -94,6 +94,22 @@
             return $this->user_login_status;
         }
 
+        function setUserToken($user_token){
+            $this->user_token = $user_token;
+        }
+
+        function getUserToken(){
+            return $this->user_token;
+        }
+
+        function setUserConnectionId($user_connection_id){
+            $this->user_connection_id = $user_connection_id;
+        }
+
+        function getUserConnectionId(){
+            return $this->user_connection_id;
+        }
+
         function make_avatar($character){
             $path = "images/". time() . ".png";
             $image = imagecreate(200, 200);
@@ -187,11 +203,13 @@
         }
 
         function update_user_login_data(){
-            $query = "UPDATE chat_users SET login_status = :login_status WHERE id = :id";
+            $query = "UPDATE chat_users SET login_status = :login_status, token = :token WHERE id = :id";
 
             $statement = $this->connect->prepare($query);
 
             $statement->bindParam(':login_status', $this->user_login_status);
+
+            $statement->bindParam(':token', $this->user_token);
 
             $statement->bindParam(':id', $this->user_id);
 
@@ -268,6 +286,16 @@
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $data;
         }
+
+        function update_user_connection_id(){
+            $query = "UPDATE chat_users SET connection_id = :connection_id WHERE token = :token";
+            $statement = $this->connect->prepare($query);
+            $statement->bindParam(':connection_id', $this->user_connection_id);
+            $statement->bindParam(':token', $this->user_token);
+            $statement->execute();
+        }
+
+        
     }
 
 ?>

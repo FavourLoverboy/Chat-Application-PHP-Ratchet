@@ -154,25 +154,18 @@
 
 		var conn = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
 
-		conn.onopen = function(event)
-		{
+		conn.onopen = function(event){
 			console.log('Connection Established');
 		};
 
-		conn.onmessage = function(event)
-		{
+		conn.onmessage = function(event){
 			var data = JSON.parse(event.data);
 
-			if(data.status_type == 'Online')
-			{
+			if(data.status_type == 'Online'){
 				$('#userstatus_'+data.user_id_status).html('<i class="fa fa-circle text-success"></i>');
-			}
-			else if(data.status_type == 'Offline')
-			{
+			}else if(data.status_type == 'Offline'){
 				$('#userstatus_'+data.user_id_status).html('<i class="fa fa-circle text-danger"></i>');
-			}
-			else
-			{
+			}else{
 
 				var row_class = '';
 				var background_class = '';
@@ -228,13 +221,11 @@
 			}
 		};
 
-		conn.onclose = function(event)
-		{
+		conn.onclose = function(event){
 			console.log('connection close');
 		};
 
-		function make_chat_area(user_name)
-		{
+		function make_chat_area(user_name){
 			var html = `
 			<div class="card">
 				<div class="card-header">
@@ -293,10 +284,8 @@
 				method:"POST",
 				data:{action:'fetch_chat', to_user_id:receiver_userid, from_user_id:from_user_id},
 				dataType:"JSON",
-				success:function(data)
-				{
-					if(data.length > 0)
-					{
+				success:function(data){
+					if(data.length > 0){
 						var html_data = '';
 
 						for(var count = 0; count < data.length; count++)

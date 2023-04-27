@@ -26,6 +26,8 @@
 
                     $user_token = md5(uniqid());
 
+                    $user_object->setUserToken($user_token);
+
                     if($user_object->update_user_login_data()){
                         $_SESSION['user_data'][$user_data['id']] = [
                             'id'    =>  $user_data['id'],
