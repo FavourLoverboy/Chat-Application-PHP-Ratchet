@@ -318,7 +318,7 @@
 										<b>`+user_name+` - </b>
 										`+data[count].chat_message+`<br />
 										<div class="text-right">
-											<small><i>`+data[count].timestamp+`</i></small>
+											<small><i>`+data[count].time+`</i></small>
 										</div>
 									</div>
 								</div>
@@ -353,8 +353,7 @@
 
 			event.preventDefault();
 
-			if($('#chat_form').parsley().isValid())
-			{
+			if($('#chat_form').parsley().isValid()){
 				var user_id = parseInt($('#login_user_id').val());
 
 				var message = $('#chat_message').val();
