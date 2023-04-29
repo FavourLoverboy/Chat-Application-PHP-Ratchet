@@ -11,7 +11,7 @@
 
         $user_object->setUserLoginStatus('Logout');
 
-        // $user_object->setUserToken($_SESSION['user_data'][$_POST['user_id']]['token']);
+        $user_object->setUserToken($_SESSION['user_data'][$_POST['user_id']]['token']);
 
         if($user_object->update_user_login_data()){
             unset($_SESSION['user_data']);

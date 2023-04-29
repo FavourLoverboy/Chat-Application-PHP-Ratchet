@@ -37,7 +37,7 @@
     
                 $user_data = $user_object->get_user_id_from_token();
                 
-                $user_id = $user_data['user_id'];
+                $user_id = $user_data['id'];
     
                 $data['status_type'] = 'Online';
     
@@ -152,6 +152,28 @@
         }
 
         public function onClose(ConnectionInterface $conn) {
+            $querystring = $conn->httpRequest->getUri()->getQuery();
+
+            parse_str($querystring, $queryarray);
+
+            if(isset($queryarray['token'])){
+
+                $user_object = new \ChatUser;
+
+                $user_object->setUserToken($queryarray['token']);
+
+                $user_data = $user_object->get_user_id_from_token();
+
+                $user_id = $user_data['id'];
+
+                $data['status_type'] = 'Offline';
+
+                $data['user_id_status'] = $user_id;
+
+                foreach($this->clients as $client){
+                    $client->send(json_encode($data));
+                }
+            }
             // The connection is closed, remove it, as we can no longer send it messages
             $this->clients->detach($conn);
 

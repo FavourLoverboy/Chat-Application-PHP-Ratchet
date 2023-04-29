@@ -280,22 +280,18 @@
 					if(data.length > 0){
 						var html_data = '';
 
-						for(var count = 0; count < data.length; count++)
-						{
+						for(var count = 0; count < data.length; count++){
 							var row_class= ''; 
 							var background_class = '';
 							var user_name = '';
 
-							if(data[count].from_user_id == from_user_id)
-							{
+							if(data[count].from_user_id == from_user_id){
 								row_class = 'row justify-content-start';
 
 								background_class = 'alert-primary';
 
 								user_name = 'Me';
-							}
-							else
-							{
+							}else{
 								row_class = 'row justify-content-end';
 
 								background_class = 'alert-success';
@@ -308,7 +304,7 @@
 								<div class="col-sm-10">
 									<div class="shadow alert `+background_class+`">
 										<b>`+user_name+` - </b>
-										`+data[count].chat_message+`<br />
+										`+data[count].message+`<br />
 										<div class="text-right">
 											<small><i>`+data[count].time+`</i></small>
 										</div>
@@ -370,13 +366,10 @@
 				url:"action.php",
 				method:"POST",
 				data:{user_id:user_id, action:'leave'},
-				success:function(data)
-				{
+				success:function(data){
 					var response = JSON.parse(data);
-					if(response.status == 1)
-					{
+					if(response.status == 1){
 						conn.close();
-
 						location = 'index.php';
 					}
 				}
