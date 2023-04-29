@@ -89,8 +89,8 @@
         function save_chat(){
             $query = "
             INSERT INTO chat_message 
-                (to_user_id, from_user_id, chat_message, timestamp, status) 
-                VALUES (:to_user_id, :from_user_id, :chat_message, :timestamp, :status)
+                (to_user_id, from_user_id, message, time, status) 
+                VALUES (:to_user_id, :from_user_id, :message, :time, :status)
             ";
 
             $statement = $this->connect->prepare($query);
@@ -99,9 +99,9 @@
 
             $statement->bindParam(':from_user_id', $this->from_user_id);
 
-            $statement->bindParam(':chat_message', $this->chat_message);
+            $statement->bindParam(':message', $this->chat_message);
 
-            $statement->bindParam(':timestamp', $this->timestamp);
+            $statement->bindParam(':time', $this->timestamp);
 
             $statement->bindParam(':status', $this->status);
 

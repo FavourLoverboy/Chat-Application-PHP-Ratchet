@@ -170,21 +170,16 @@
 				var row_class = '';
 				var background_class = '';
 
-				if(data.from == 'Me')
-				{
+				if(data.from == 'Me'){
 					row_class = 'row justify-content-start';
 					background_class = 'alert-primary';
-				}
-				else
-				{
+				}else{
 					row_class = 'row justify-content-end';
 					background_class = 'alert-success';
 				}
 
-				if(receiver_userid == data.userId || data.from == 'Me')
-				{
-					if($('#is_active_chat').val() == 'Yes')
-					{
+				if(receiver_userid == data.userId || data.from == 'Me'){
+					if($('#is_active_chat').val() == 'Yes'){
 						var html_data = `
 						<div class="`+row_class+`">
 							<div class="col-sm-10">
@@ -204,13 +199,10 @@
 
 						$('#chat_message').val("");
 					}
-				}
-				else
-				{
+				}else{
 					var count_chat = $('#userid'+data.userId).text();
 
-					if(count_chat == '')
-					{
+					if(count_chat == ''){
 						count_chat = 0;
 					}
 
